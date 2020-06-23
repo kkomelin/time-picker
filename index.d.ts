@@ -1,5 +1,4 @@
 declare module "rc-time-picker" {
-  import { Moment } from "moment";
   import * as React from "react";
 
   type TimePickerProps = {
@@ -8,9 +7,9 @@ declare module "rc-time-picker" {
     disabled?: boolean;
     allowEmpty?: boolean;
     open?: boolean;
-    defaultValue?: Moment;
-    defaultOpenValue?: Moment;
-    value?: Moment;
+    defaultValue?: Date;
+    defaultOpenValue?: Date;
+    value?: Date;
     placeholder?: string;
     className?: string;
     inputClassName?: string;
@@ -26,7 +25,7 @@ declare module "rc-time-picker" {
     disabledSeconds?: (hour: number, minute: number) => number[];
     use12Hours?: boolean;
     hideDisabledOptions?: boolean;
-    onChange?: (newValue: Moment | null) => void;
+    onChange?: (newValue: Date | null) => void;
     onAmPmChange?: (ampm: 'PM' | 'AM') => void;
     addon?: (instance: typeof Panel) => React.ReactNode;
     placement?: string;

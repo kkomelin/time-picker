@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import moment from 'moment';
 import classNames from 'classnames';
-import Header from './Header';
+import getHours from 'date-fns/getHours';
+import getMinutes from 'date-fns/getMinutes';
+import getSeconds from 'date-fns/getSeconds';
+import parse from 'date-fns/parse';
+import React, { Component } from 'react';
 import Combobox from './Combobox';
+import Header from './Header';
 
 function noop() {}
 
@@ -19,14 +22,14 @@ function generateOptions(length, disabledOptions, hideDisabledOptions, step = 1)
 function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
   const hour = hourOptions
     .slice()
-    .sort((a, b) => Math.abs(time.hour() - a) - Math.abs(time.hour() - b))[0];
+    .sort((a, b) => Math.abs(getHours(time) - a) - Math.abs(getHours(time) - b))[0];
   const minute = minuteOptions
     .slice()
-    .sort((a, b) => Math.abs(time.minute() - a) - Math.abs(time.minute() - b))[0];
+    .sort((a, b) => Math.abs(getMinutes(time) - a) - Math.abs(getMinutes(time) - b))[0];
   const second = secondOptions
     .slice()
-    .sort((a, b) => Math.abs(time.second() - a) - Math.abs(time.second() - b))[0];
-  return moment(`${hour}:${minute}:${second}`, 'HH:mm:ss');
+    .sort((a, b) => Math.abs(getSeconds(time) - a) - Math.abs(getSeconds(time) - b))[0];
+  return parse(`${hour}:${minute}:${second}`, 'HH:mm:ss', new Date());
 }
 
 class Panel extends Component {
@@ -36,7 +39,7 @@ class Panel extends Component {
     disabledHours: noop,
     disabledMinutes: noop,
     disabledSeconds: noop,
-    defaultOpenValue: moment(),
+    defaultOpenValue: new Date(),
     use12Hours: false,
     addon: noop,
     onKeyDown: noop,
@@ -94,7 +97,7 @@ class Panel extends Component {
     const { defaultOpenValue } = this.props;
     const { value } = this.state;
     const realValue = value || defaultOpenValue;
-    return realValue.hour() >= 0 && realValue.hour() < 12;
+    return getHours(realValue) >= 0 && getHours(realValue) < 12;
   }
 
   render() {
@@ -124,10 +127,10 @@ class Panel extends Component {
     } = this.props;
     const { value, currentSelectPanel } = this.state;
     const disabledHourOptions = this.disabledHours();
-    const disabledMinuteOptions = disabledMinutes(value ? value.hour() : null);
+    const disabledMinuteOptions = disabledMinutes(value ? getHours(value) : null);
     const disabledSecondOptions = disabledSeconds(
-      value ? value.hour() : null,
-      value ? value.minute() : null,
+      value ? getHours(value) : null,
+      value ? getMinutes(value) : null,
     );
     const hourOptions = generateOptions(24, disabledHourOptions, hideDisabledOptions, hourStep);
     const minuteOptions = generateOptions(

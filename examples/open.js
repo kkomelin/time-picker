@@ -1,8 +1,8 @@
 /* eslint no-console:0 */
-import '../assets/index.less';
+import parse from 'date-fns/parse';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
 const iconStyle = {
   position: 'absolute',
@@ -108,7 +108,7 @@ class App extends React.Component {
           style={{
             position: 'relative',
           }}
-          defaultValue={moment('01:02:04', 'HH:mm:ss')}
+          defaultValue={parse('01:02:04', 'HH:mm:ss', new Date())}
           open={open}
           onOpen={this.setOpen}
           onClose={this.setOpen}

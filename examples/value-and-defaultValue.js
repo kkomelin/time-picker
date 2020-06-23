@@ -1,16 +1,16 @@
 /* eslint no-console:0 */
-import '../assets/index.less';
+import format from 'date-fns/format';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
 class App extends React.Component {
   state = {
-    value: moment(),
+    value: new Date(),
   };
 
   handleValueChange = value => {
-    console.log(value && value.format('HH:mm:ss'));
+    console.log(value && format(value, 'HH:mm:ss'));
     this.setState({ value });
   };
 

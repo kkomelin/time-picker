@@ -1,16 +1,18 @@
 /* eslint no-console:0 */
 
-import '../assets/index.less';
+import format from 'date-fns/format';
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
 const showSecond = true;
 const str = showSecond ? 'HH:mm:ss' : 'HH:mm';
 
-const now = moment()
-  .hour(14)
-  .minute(30);
+let now = new Date();
+now = setHours(now, 14);
+now = setMinutes(now, 30);
 
 function generateOptions(length, excludedOptions) {
   const arr = [];
@@ -23,7 +25,7 @@ function generateOptions(length, excludedOptions) {
 }
 
 function onChange(value) {
-  console.log(value && value.format(str));
+  console.log(value && format(value, str));
 }
 
 function disabledHours() {

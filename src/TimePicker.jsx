@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Trigger from 'rc-trigger';
-import moment from 'moment';
 import classNames from 'classnames';
+import formatFn from 'date-fns/format';
+import Trigger from 'rc-trigger';
+import React, { Component } from 'react';
 import Panel from './Panel';
 import placements from './placements';
 
@@ -23,7 +23,7 @@ class Picker extends Component {
     popupClassName: '',
     popupStyle: {},
     align: {},
-    defaultOpenValue: moment(),
+    defaultOpenValue: new Date(),
     allowEmpty: true,
     showHour: true,
     showMinute: true,
@@ -314,7 +314,7 @@ class Picker extends Component {
             name={name}
             onKeyDown={this.onKeyDown}
             disabled={disabled}
-            value={(value && value.format(this.getFormat())) || ''}
+            value={(value && formatFn(value, this.getFormat())) || ''}
             autoComplete={autoComplete}
             onFocus={onFocus}
             onBlur={onBlur}

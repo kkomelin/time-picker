@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import setHours from 'date-fns/setHours';
+import getHours from 'date-fns/getHours';
+import getMinutes from 'date-fns/getMinutes';
+import getSeconds from 'date-fns/getSeconds';
+import setSeconds from 'date-fns/setSeconds';
+import setMinutes from 'date-fns/setMinutes';
 import Select from './Select';
 
 const formatOption = (option, disabledOptions) => {
@@ -28,36 +34,36 @@ class Combobox extends Component {
       isAM,
       onAmPmChange,
     } = this.props;
-    const value = (propValue || defaultOpenValue).clone();
+    let value = new Date((propValue || defaultOpenValue).getTime());
 
     if (type === 'hour') {
       if (use12Hours) {
         if (isAM) {
-          value.hour(+itemValue % 12);
+          value = setHours(value, +itemValue % 12);
         } else {
-          value.hour((+itemValue % 12) + 12);
+          value = setHours(value, (+itemValue % 12) + 12);
         }
       } else {
-        value.hour(+itemValue);
+        value = setHours(value, +itemValue);
       }
     } else if (type === 'minute') {
-      value.minute(+itemValue);
+      value = setMinutes(value, +itemValue);
     } else if (type === 'ampm') {
       const ampm = itemValue.toUpperCase();
       if (use12Hours) {
-        if (ampm === 'PM' && value.hour() < 12) {
-          value.hour((value.hour() % 12) + 12);
+        if (ampm === 'PM' && getHours(value) < 12) {
+          value = setHours(value, (getHours(value) % 12) + 12);
         }
 
         if (ampm === 'AM') {
-          if (value.hour() >= 12) {
-            value.hour(value.hour() - 12);
+          if (getHours(value) >= 12) {
+            value = setHours(value, getHours(value) - 12);
           }
         }
       }
       onAmPmChange(ampm);
     } else {
-      value.second(+itemValue);
+      value = setSeconds(value, +itemValue);
     }
     onChange(value);
   };
@@ -110,7 +116,7 @@ class Combobox extends Component {
       return null;
     }
     const value = propValue || defaultOpenValue;
-    const disabledOptions = disabledMinutes(value.hour());
+    const disabledOptions = disabledMinutes(getHours(value));
 
     return (
       <Select
@@ -139,7 +145,7 @@ class Combobox extends Component {
       return null;
     }
     const value = propValue || defaultOpenValue;
-    const disabledOptions = disabledSeconds(value.hour(), value.minute());
+    const disabledOptions = disabledSeconds(getHours(value), getMinutes(value));
 
     return (
       <Select
@@ -184,10 +190,10 @@ class Combobox extends Component {
     const value = propValue || defaultOpenValue;
     return (
       <div className={`${prefixCls}-combobox`}>
-        {this.getHourSelect(value.hour())}
-        {this.getMinuteSelect(value.minute())}
-        {this.getSecondSelect(value.second())}
-        {this.getAMPMSelect(value.hour())}
+        {this.getHourSelect(getHours(value))}
+        {this.getMinuteSelect(getMinutes(value))}
+        {this.getSecondSelect(getSeconds(value))}
+        {this.getAMPMSelect(getHours(value))}
       </div>
     );
   }

@@ -1,21 +1,21 @@
 /* eslint no-console:0 */
-import '../assets/index.less';
+import format from 'date-fns/format';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
 const showSecond = true;
 const str = showSecond ? 'HH:mm:ss' : 'HH:mm';
 
 function onChange(value) {
-  console.log(value && value.format(str));
+  console.log(value && format(value, str));
 }
 
 const App = () => (
   <TimePicker
     style={{ width: 100 }}
     showSecond={showSecond}
-    defaultValue={moment()}
+    defaultValue={new Date()}
     className="xxx"
     onChange={onChange}
   />

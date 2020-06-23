@@ -1,17 +1,16 @@
-import '../assets/index.less';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
 const App = () => (
   <>
-    <TimePicker defaultValue={moment()} showHour={false} />
-    <TimePicker defaultValue={moment()} showMinute={false} />
-    <TimePicker defaultValue={moment()} showSecond={false} />
+    <TimePicker defaultValue={new Date()} showHour={false} />
+    <TimePicker defaultValue={new Date()} showMinute={false} />
+    <TimePicker defaultValue={new Date()} showSecond={false} />
 
-    <TimePicker defaultValue={moment()} showMinute={false} showSecond={false} />
-    <TimePicker defaultValue={moment()} showHour={false} showSecond={false} />
-    <TimePicker defaultValue={moment()} showHour={false} showMinute={false} />
+    <TimePicker defaultValue={new Date()} showMinute={false} showSecond={false} />
+    <TimePicker defaultValue={new Date()} showHour={false} showSecond={false} />
+    <TimePicker defaultValue={new Date()} showHour={false} showMinute={false} />
   </>
 );
 

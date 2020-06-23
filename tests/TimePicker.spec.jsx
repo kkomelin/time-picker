@@ -1,7 +1,10 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
+import getHours from 'date-fns/getHours';
+import getMinutes from 'date-fns/getMinutes';
+import getSeconds from 'date-fns/getSeconds';
+import parse from 'date-fns/parse';
 import { mount } from 'enzyme';
-import moment from 'moment';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import TimePicker from '../src/TimePicker';
 import { clickInput, clickSelectItem, matchValue } from './util';
 
@@ -16,7 +19,7 @@ describe('TimePicker', () => {
       <TimePicker
         format={format}
         showSecond={showSecond}
-        defaultValue={moment('12:57:58', format)}
+        defaultValue={parse('12:57:58', format, new Date())}
         {...props}
       />,
       options,
@@ -31,7 +34,7 @@ describe('TimePicker', () => {
       <TimePicker
         format={format}
         showSecond={showSecond}
-        defaultValue={moment('08:24', format)}
+        defaultValue={parse('08:24', format, new Date())}
         {...props}
       />,
     );
@@ -61,9 +64,9 @@ describe('TimePicker', () => {
       clickSelectItem(picker, 0, 1);
 
       expect(onChange).toBeCalled();
-      expect(onChange.mock.calls[0][0].hour()).toBe(1);
-      expect(onChange.mock.calls[0][0].minute()).toBe(57);
-      expect(onChange.mock.calls[0][0].second()).toBe(58);
+      expect(getHours(onChange.mock.calls[0][0])).toBe(1);
+      expect(getMinutes(onChange.mock.calls[0][0])).toBe(57);
+      expect(getSeconds(onChange.mock.calls[0][0])).toBe(58);
       matchValue(picker, '01:57:58');
       expect(picker.state().open).toBeTruthy();
     });
@@ -128,8 +131,8 @@ describe('TimePicker', () => {
       clickSelectItem(picker, 0, 1);
 
       expect(onChange).toBeCalled();
-      expect(onChange.mock.calls[0][0].hour()).toBe(1);
-      expect(onChange.mock.calls[0][0].minute()).toBe(24);
+      expect(getHours(onChange.mock.calls[0][0])).toBe(1);
+      expect(getMinutes(onChange.mock.calls[0][0])).toBe(24);
       matchValue(picker, '01:24');
       expect(picker.state().open).toBeTruthy();
     });

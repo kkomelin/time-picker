@@ -1,8 +1,7 @@
-import '../assets/index.less';
 import React from 'react';
-import moment from 'moment';
 import TimePicker from '..';
+import '../assets/index.less';
 
-const App = () => <TimePicker defaultValue={moment()} showSecond={false} minuteStep={15} />;
+const App = () => <TimePicker defaultValue={new Date()} showSecond={false} minuteStep={15} />;
 
 export default App;

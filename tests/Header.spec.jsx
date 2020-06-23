@@ -1,10 +1,10 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
+import parse from 'date-fns/parse';
 import { mount } from 'enzyme';
-import moment from 'moment';
+import KeyCode from 'rc-util/lib/KeyCode';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import TimePicker from '../src/TimePicker';
-import { findHeader, clickInput, blurInput, matchAll } from './util';
+import { blurInput, clickInput, findHeader, matchAll } from './util';
 
 describe('Header', () => {
   let container;
@@ -16,7 +16,7 @@ describe('Header', () => {
       <TimePicker
         format={format}
         showSecond={showSecond}
-        defaultValue={moment('01:02:03', format)}
+        defaultValue={parse('01:02:03', format, new Date())}
         {...props}
       />,
     );
