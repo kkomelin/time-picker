@@ -1,10 +1,4 @@
-import getHours from 'date-fns/getHours';
-import getMinutes from 'date-fns/getMinutes';
-import getSeconds from 'date-fns/getSeconds';
 import parse from 'date-fns/parse';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
-import setSeconds from 'date-fns/setSeconds';
 import { mount } from 'enzyme';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -134,7 +128,7 @@ describe('Select', () => {
       clickSelectItem(picker, 0, 19);
 
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(19);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(19);
       matchAll(picker, '19:02:04');
       expect(picker.state().open).toBeTruthy();
     });
@@ -154,7 +148,7 @@ describe('Select', () => {
       clickSelectItem(picker, 1, 19);
 
       expect(onChange).toBeCalled();
-      expect(getMinutes(onChange.mock.calls[0][0])).toBe(19);
+      expect(onChange.mock.calls[0][0].getMinutes()).toBe(19);
       matchAll(picker, '01:19:04');
       expect(picker.state().open).toBeTruthy();
     });
@@ -174,17 +168,15 @@ describe('Select', () => {
       clickSelectItem(picker, 2, 19);
 
       expect(onChange).toBeCalled();
-      expect(getSeconds(onChange.mock.calls[0][0])).toBe(19);
+      expect(onChange.mock.calls[0][0].getSeconds()).toBe(19);
       matchAll(picker, '01:02:19');
       expect(picker.state().open).toBeTruthy();
     });
 
     it('ampm correctly', async () => {
       const onAmPmChange = jest.fn();
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
       const picker = renderPicker({
         onAmPmChange,
         defaultValue: date,
@@ -239,7 +231,7 @@ describe('Select', () => {
       clickSelectItem(picker, 1, 7);
 
       expect(onChange).toBeCalled();
-      expect(getMinutes(onChange.mock.calls[0][0])).toBe(7);
+      expect(onChange.mock.calls[0][0].getMinutes()).toBe(7);
       matchAll(picker, '01:07:04');
       expect(picker.state().open).toBeTruthy();
     });
@@ -262,7 +254,7 @@ describe('Select', () => {
       clickSelectItem(picker, 0, 3);
 
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(6);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(6);
       matchAll(picker, '06:02:04');
       expect(picker.state().open).toBeTruthy();
       onChange.mockReset();
@@ -270,7 +262,7 @@ describe('Select', () => {
       clickSelectItem(picker, 0, 4);
 
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(8);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(8);
       matchAll(picker, '08:02:04');
       expect(picker.state().open).toBeTruthy();
     });
@@ -278,10 +270,8 @@ describe('Select', () => {
 
   describe('select in 12 hours mode', () => {
     it('renders correctly', async () => {
-      let date = new Date();
-      date = setHours(date, 14);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(14, 0, 0);
       const picker = renderPicker({
         use12Hours: true,
         defaultValue: date,
@@ -299,10 +289,8 @@ describe('Select', () => {
     });
 
     it('renders 12am correctly', async () => {
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
       const picker = renderPicker({
         use12Hours: true,
         defaultValue: date,
@@ -317,10 +305,8 @@ describe('Select', () => {
     });
 
     it('renders 5am correctly', async () => {
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
       const picker = renderPicker({
         use12Hours: true,
         defaultValue: date,
@@ -338,10 +324,8 @@ describe('Select', () => {
     });
 
     it('renders 12am/pm correctly', async () => {
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
 
       const picker = renderPicker({
         use12Hours: true,
@@ -364,10 +348,8 @@ describe('Select', () => {
     });
 
     it('renders uppercase AM correctly', async () => {
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
       const picker = renderPicker({
         use12Hours: true,
         defaultValue: date,
@@ -390,10 +372,8 @@ describe('Select', () => {
 
     it('disabled correctly', async () => {
       const onChange = jest.fn();
-      let date = new Date();
-      date = setHours(date, 0);
-      date = setMinutes(date, 0);
-      date = setSeconds(date, 0);
+      const date = new Date();
+      date.setHours(0, 0, 0);
       const picker = renderPicker({
         use12Hours: true,
         format: undefined,
@@ -418,7 +398,7 @@ describe('Select', () => {
 
       clickSelectItem(picker, 0, 5);
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(5);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(5);
       matchAll(picker, '5:00 AM');
       expect(picker.state().open).toBeTruthy();
       onChange.mockReset();
@@ -437,7 +417,7 @@ describe('Select', () => {
 
       clickSelectItem(picker, 0, 5);
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(17);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(17);
       matchAll(picker, '5:00 PM');
       expect(picker.state().open).toBeTruthy();
     });

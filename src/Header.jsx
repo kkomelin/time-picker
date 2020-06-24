@@ -1,13 +1,7 @@
 import classNames from 'classnames';
 import formatFn from 'date-fns/format';
-import getHours from 'date-fns/getHours';
-import getMinutes from 'date-fns/getMinutes';
-import getSeconds from 'date-fns/getSeconds';
 import isValid from 'date-fns/isValid';
 import parse from 'date-fns/parse';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
-import setSeconds from 'date-fns/setSeconds';
 import React, { Component } from 'react';
 
 class Header extends Component {
@@ -73,7 +67,7 @@ class Header extends Component {
 
     if (str) {
       const { value: originalValue } = this.props;
-      let value = new Date(this.getProtoValue().getTime());
+      const value = new Date(this.getProtoValue().getTime());
       const parsed = parse(str, format, new Date());
       if (!isValid(parsed)) {
         this.setState({
@@ -81,15 +75,13 @@ class Header extends Component {
         });
         return;
       }
-      value = setHours(value, getHours(parsed));
-      value = setMinutes(value, getMinutes(parsed));
-      value = setSeconds(value, getSeconds(parsed));
+      value.setHours(parsed.getHours(), parsed.getMinutes(), parsed.getSeconds());
 
       // if time value not allowed, response warning.
       if (
-        hourOptions.indexOf(getHours(value)) < 0 ||
-        minuteOptions.indexOf(getMinutes(value)) < 0 ||
-        secondOptions.indexOf(getSeconds(value)) < 0
+        hourOptions.indexOf(value.getHours()) < 0 ||
+        minuteOptions.indexOf(value.getMinutes()) < 0 ||
+        secondOptions.indexOf(value.getSeconds()) < 0
       ) {
         this.setState({
           invalid: true,
@@ -99,12 +91,12 @@ class Header extends Component {
 
       // if time value is disabled, response warning.
       const disabledHourOptions = disabledHours();
-      const disabledMinuteOptions = disabledMinutes(getHours(value));
-      const disabledSecondOptions = disabledSeconds(getHours(value), getMinutes(value));
+      const disabledMinuteOptions = disabledMinutes(value.getHours());
+      const disabledSecondOptions = disabledSeconds(value.getHours(), value.getMinutes());
       if (
-        (disabledHourOptions && disabledHourOptions.indexOf(getHours(value)) >= 0) ||
-        (disabledMinuteOptions && disabledMinuteOptions.indexOf(getMinutes(value)) >= 0) ||
-        (disabledSecondOptions && disabledSecondOptions.indexOf(getSeconds(value)) >= 0)
+        (disabledHourOptions && disabledHourOptions.indexOf(value.getHours()) >= 0) ||
+        (disabledMinuteOptions && disabledMinuteOptions.indexOf(value.getMinutes()) >= 0) ||
+        (disabledSecondOptions && disabledSecondOptions.indexOf(value.getSeconds()) >= 0)
       ) {
         this.setState({
           invalid: true,
@@ -114,15 +106,13 @@ class Header extends Component {
 
       if (originalValue) {
         if (
-          getHours(originalValue) !== getHours(value) ||
-          getMinutes(originalValue) !== getMinutes(value) ||
-          getSeconds(originalValue) !== getSeconds(value)
+          originalValue.getHours() !== value.getHours() ||
+          originalValue.getMinutes() !== value.getMinutes() ||
+          originalValue.getSeconds() !== value.getSeconds()
         ) {
           // keep other fields for rc-calendar
-          let changedValue = new Date(originalValue.getTime());
-          changedValue = setHours(changedValue, getHours(value));
-          changedValue = setMinutes(changedValue, getMinutes(value));
-          changedValue = setSeconds(changedValue, getSeconds(value));
+          const changedValue = new Date(originalValue.getTime());
+          changedValue.setHours(value.getHours(), value.getMinutes(), value.getSeconds());
           onChange(changedValue);
         }
       } else if (originalValue !== value) {

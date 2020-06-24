@@ -1,6 +1,3 @@
-import getHours from 'date-fns/getHours';
-import getMinutes from 'date-fns/getMinutes';
-import getSeconds from 'date-fns/getSeconds';
 import parse from 'date-fns/parse';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -64,9 +61,9 @@ describe('TimePicker', () => {
       clickSelectItem(picker, 0, 1);
 
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(1);
-      expect(getMinutes(onChange.mock.calls[0][0])).toBe(57);
-      expect(getSeconds(onChange.mock.calls[0][0])).toBe(58);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(1);
+      expect(onChange.mock.calls[0][0].getMinutes()).toBe(57);
+      expect(onChange.mock.calls[0][0].getSeconds()).toBe(58);
       matchValue(picker, '01:57:58');
       expect(picker.state().open).toBeTruthy();
     });
@@ -131,8 +128,8 @@ describe('TimePicker', () => {
       clickSelectItem(picker, 0, 1);
 
       expect(onChange).toBeCalled();
-      expect(getHours(onChange.mock.calls[0][0])).toBe(1);
-      expect(getMinutes(onChange.mock.calls[0][0])).toBe(24);
+      expect(onChange.mock.calls[0][0].getHours()).toBe(1);
+      expect(onChange.mock.calls[0][0].getMinutes()).toBe(24);
       matchValue(picker, '01:24');
       expect(picker.state().open).toBeTruthy();
     });

@@ -1,7 +1,4 @@
 import classNames from 'classnames';
-import getHours from 'date-fns/getHours';
-import getMinutes from 'date-fns/getMinutes';
-import getSeconds from 'date-fns/getSeconds';
 import parse from 'date-fns/parse';
 import React, { Component } from 'react';
 import Combobox from './Combobox';
@@ -22,13 +19,13 @@ function generateOptions(length, disabledOptions, hideDisabledOptions, step = 1)
 function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
   const hour = hourOptions
     .slice()
-    .sort((a, b) => Math.abs(getHours(time) - a) - Math.abs(getHours(time) - b))[0];
+    .sort((a, b) => Math.abs(time.getHours() - a) - Math.abs(time.getHours() - b))[0];
   const minute = minuteOptions
     .slice()
-    .sort((a, b) => Math.abs(getMinutes(time) - a) - Math.abs(getMinutes(time) - b))[0];
+    .sort((a, b) => Math.abs(time.getMinutes() - a) - Math.abs(time.getMinutes() - b))[0];
   const second = secondOptions
     .slice()
-    .sort((a, b) => Math.abs(getSeconds(time) - a) - Math.abs(getSeconds(time) - b))[0];
+    .sort((a, b) => Math.abs(time.getSeconds() - a) - Math.abs(time.getSeconds() - b))[0];
   return parse(`${hour}:${minute}:${second}`, 'HH:mm:ss', new Date());
 }
 
@@ -97,7 +94,7 @@ class Panel extends Component {
     const { defaultOpenValue } = this.props;
     const { value } = this.state;
     const realValue = value || defaultOpenValue;
-    return getHours(realValue) >= 0 && getHours(realValue) < 12;
+    return realValue.getHours() >= 0 && realValue.getHours() < 12;
   }
 
   render() {
@@ -127,10 +124,10 @@ class Panel extends Component {
     } = this.props;
     const { value, currentSelectPanel } = this.state;
     const disabledHourOptions = this.disabledHours();
-    const disabledMinuteOptions = disabledMinutes(value ? getHours(value) : null);
+    const disabledMinuteOptions = disabledMinutes(value ? value.getHours() : null);
     const disabledSecondOptions = disabledSeconds(
-      value ? getHours(value) : null,
-      value ? getMinutes(value) : null,
+      value ? value.getHours() : null,
+      value ? value.getMinutes() : null,
     );
     const hourOptions = generateOptions(24, disabledHourOptions, hideDisabledOptions, hourStep);
     const minuteOptions = generateOptions(

@@ -1,8 +1,6 @@
 /* eslint no-console:0 */
 
 import format from 'date-fns/format';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
 import React from 'react';
 import TimePicker from '..';
 import '../assets/index.less';
@@ -10,9 +8,8 @@ import '../assets/index.less';
 const showSecond = true;
 const str = showSecond ? 'HH:mm:ss' : 'HH:mm';
 
-let now = new Date();
-now = setHours(now, 14);
-now = setMinutes(now, 30);
+const now = new Date();
+now.setHours(14, 30);
 
 function generateOptions(length, excludedOptions) {
   const arr = [];
